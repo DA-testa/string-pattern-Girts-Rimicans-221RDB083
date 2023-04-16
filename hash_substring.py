@@ -1,32 +1,59 @@
 # python3
+def parse_input_user():
+    pattern = str(input().strip())
+    text = str(input().strip())
+    return pattern, text
+
+def parse_input_file(file_name):
+    file = open(file_name, "r", -1, "utf-8")
+    pattern = str(file.readline().strip())
+    text = str(file.readline().strip())
+    return pattern, text
 
 def read_input():
-    # this function needs to aquire input both from keyboard and file
-    # as before, use capital i (input from keyboard) and capital f (input from file) to choose which input type will follow
-    
-    
-    # after input type choice
-    # read two lines 
-    # first line is pattern 
-    # second line is text in which to look for pattern 
-    
-    # return both lines in one return
-    
-    # this is the sample return, notice the rstrip function
-    return (input().rstrip(), input().rstrip())
+    pattern, text = "", ""
+
+    try:
+        key = input().strip()
+        # print(key)
+        if (key.upper() == "I"):
+            pattern, text = parse_input_user()
+        elif (key.upper() == "F"):
+            file_name = "06"
+            pattern, text = parse_input_file("tests/" + file_name)
+    except:
+        pass
+    return (pattern, text)
 
 def print_occurrences(output):
     # this function should control output, it doesn't need any return
     print(' '.join(map(str, output)))
 
 def get_occurrences(pattern, text):
-    # this function should find the occurances using Rabin Karp alghoritm 
+    p = len(pattern)
+    t = len(text)
+    q = 101
+    d = 256
 
-    # and return an iterable variable
-    return [0]
+    pattern_hash = 0
+    for i in range(p):
+        pattern_hash = (d * pattern_hash + ord(pattern[i])) % q
 
+    text_hash = 0
+    for i in range(p):
+        text_hash = (d * text_hash + ord(text[i])) % q
+
+    positions = []
+    for i in range(t - p + 1):
+        if pattern_hash == text_hash and pattern == text[i:i+p]:
+            positions.append(i)
+        if i < t - p:
+            text_hash = (d * (text_hash - ord(text[i]) * pow(d, p-1, q)) + ord(text[i+p])) % q
+            if text_hash < 0:
+                text_hash += q
+
+    return positions
 
 # this part launches the functions
 if __name__ == '__main__':
     print_occurrences(get_occurrences(*read_input()))
-
