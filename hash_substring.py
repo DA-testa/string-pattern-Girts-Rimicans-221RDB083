@@ -19,9 +19,7 @@ def read_input():
         if (key.upper() == "I"):
             pattern, text = parse_input_user()
         elif (key.upper() == "F"):
-            file_name = input().strip()
-            if (file_name.lower() == "a"):
-                pass
+            file_name = "06"
             pattern, text = parse_input_file("tests/" + file_name)
     except:
         pass
