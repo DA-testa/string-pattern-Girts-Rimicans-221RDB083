@@ -11,7 +11,7 @@ def parse_input_file(file_name):
     return pattern, text
 
 def read_input():
-    pattern, text = ""
+    pattern, text = "", ""
 
     try:
         key = input().strip()
